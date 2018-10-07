@@ -1,4 +1,4 @@
-pragma solidity ^0.4.18;
+pragma solidity ^0.4.24;
 
 import "./Mortal.sol";
 import "./Utils.sol";
@@ -18,6 +18,7 @@ contract UserBal is Mortal{
     }
     struct User {
         address addr;
+        bytes32[] assetsList;
         //Asset Symbol is map key
         mapping(string => Asset) assetsMap;
     }
@@ -78,15 +79,13 @@ contract UserBal is Mortal{
     /** @dev Fetch all token balance
         * @return Array of struct containing asset symbol and quantity
         */
-
-    /**
-    function getTokensBal() public 
+    
+    function getAvailableTokens() public 
     view
-    onlyOwner
-    returns(Asset[]){
-        return userHoldings[msg.sender].assetsMap;
+    returns(bytes32[]){
+        return userHoldings[msg.sender].assetsList;
     }
-    */
+    
 
     /** @dev Check whether user has sufficent balance of a particulat token
         * @return bool
@@ -100,7 +99,7 @@ contract UserBal is Mortal{
         return false;
     }
 
-    function updateOnChainHoldings(string _assetSymbol,uint256 _withdrwalQuantity) 
+    function useHoldings(string _assetSymbol,uint256 _withdrwalQuantity) 
     public
     returns(bool) {
         userHoldings[msg.sender].addr = msg.sender;
@@ -110,10 +109,11 @@ contract UserBal is Mortal{
         return true;
     }
 
-    function addOnChainHoldings(string _assetSymbol,uint256 _quantity) 
+    function addOnChainHoldings(string _assetSymbol, uint256 _quantity) 
     public
     returns(uint256) {
         userHoldings[msg.sender].addr = msg.sender;
+        userHoldings[msg.sender].assetsList.push(Utils.stringToBytes32(_assetSymbol));
         userHoldings[msg.sender].assetsMap[_assetSymbol] = Asset(_assetSymbol, _quantity);
         //Return current balance
         return userHoldings[msg.sender].assetsMap[_assetSymbol].assetQuantity;

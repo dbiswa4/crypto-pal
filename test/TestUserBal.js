@@ -33,7 +33,7 @@ contract('UserBal contract functionalities testing', function(accounts){
             let assetSymbol = "DAI";
             let withdrwalQuantity = 2;
             return UserBal.deployed().then(function(instance){
-                instance.updateOnChainHoldings(assetSymbol,withdrwalQuantity,{from:accounts[0]});
+                instance.useHoldings(assetSymbol,withdrwalQuantity,{from:accounts[0]});
                 return instance.getTokenBal.call(assetSymbol,{from:accounts[0]})
             }).then(function(result){
                 let expected = 3;
@@ -41,5 +41,5 @@ contract('UserBal contract functionalities testing', function(accounts){
                 assert.equal( actual,expected,'Coin Holdings updated');
             })
         });
-
+        
 })
