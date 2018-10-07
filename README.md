@@ -1,4 +1,4 @@
-### CryptoPal 
+# CryptoPal 
 
 ## Inspiration
 Foster adoption of crypto services and products by non-tech-savvy consumers. 
