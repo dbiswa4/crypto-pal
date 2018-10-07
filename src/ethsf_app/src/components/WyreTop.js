@@ -429,8 +429,8 @@ class WyreTop extends Component {
                 fontWeight: 'bold',
                 lineHeight: '48px',
               }}>
-              PAY IN DOLLARS FOR YOUR <br/>
-              CRYPTO SERVICES
+              PAY IN DOLLARS FOR<br/>
+              YOUR CRYPTO SERVICES
             </span>
           </Col>
           <Col md="3" xs="12" />
