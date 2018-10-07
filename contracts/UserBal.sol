@@ -102,7 +102,6 @@ contract UserBal is Mortal{
 
     function updateOnChainHoldings(string _assetSymbol,uint256 _withdrwalQuantity) 
     public
-    onlyOwner
     returns(bool) {
         userHoldings[msg.sender].addr = msg.sender;
         uint256 curBal = userHoldings[msg.sender].assetsMap[_assetSymbol].assetQuantity;
@@ -113,7 +112,6 @@ contract UserBal is Mortal{
 
     function addOnChainHoldings(string _assetSymbol,uint256 _quantity) 
     public
-    onlyOwner
     returns(uint256) {
         userHoldings[msg.sender].addr = msg.sender;
         userHoldings[msg.sender].assetsMap[_assetSymbol] = Asset(_assetSymbol, _quantity);
