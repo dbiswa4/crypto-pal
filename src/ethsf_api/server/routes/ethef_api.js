@@ -315,6 +315,7 @@ exports.userService = async (req, res) => {
       'token_address': token_of_fee,
       'amount': amount_of_fee,
       'token_name': 'TST',
+      'type': 'info',
     });
     console.log("status1 fired!")
 
@@ -326,6 +327,7 @@ exports.userService = async (req, res) => {
       'message': 'Convert DAI to TST successfully',
       'dai': 0.1,
       'tst': amount_of_fee,
+      'type': 'success',
     });
 
     // pay for utility with token
@@ -352,17 +354,18 @@ exports.userService = async (req, res) => {
     req.app.io.emit('status1', {
       'message': 'Pay with TST for utility successfully',
       'tst': amount_of_fee,
+      'type': 'success',
     });
 
-    // // check DAI balance
-    // // get oken_parameters
-    // const dai_balance_wei = await _check_dai_balance({
-    //   _web3: childWeb3,
-    //   _token_address: "0xc4375b7de8af5a38a93548eb8453a498222c4ff2",
-    //   _from_address: "0xd3bbba23a2d1183ddf35ca04ae8f3872a96db8e7",
-    //   _address_to_check: "0xd3bbba23a2d1183ddf35ca04ae8f3872a96db8e7",
-    // })
-    // console.log("dai_balance_wei: ", dai_balance_wei)
+    // check DAI balance
+    // get oken_parameters
+    const dai_balance_wei = await _check_dai_balance({
+      _web3: childWeb3,
+      _token_address: "0xc4375b7de8af5a38a93548eb8453a498222c4ff2",
+      _from_address: "0xd3bbba23a2d1183ddf35ca04ae8f3872a96db8e7",
+      _address_to_check: "0xd3bbba23a2d1183ddf35ca04ae8f3872a96db8e7",
+    })
+    console.log("dai_balance_wei: ", dai_balance_wei)
 
 
     // update our contract
@@ -372,15 +375,18 @@ exports.userService = async (req, res) => {
 
     const results_3 = await _updateOurContract({
       nounce: nounce2,
-      dai_balance_wei: _normalize_amount({ amount: 0.1 }),
+      dai_balance_wei: dai_balance_wei,
       // pKey: "9c52284cd053131ae7c63834d38cc271b7a11a3fd7724385cb2253b3671e2fa7",
       pKey: "887819420379bc77a0175f5430f270f4fb63fdf0cf33ac033c5fac77bd651037",
       web3: childWeb3,
     })
 
+    console.log("here ?")
+
     // socket io
     req.app.io.emit('status1', {
       'message': 'Record balance on smart contract successfully.',
+      'type': 'success',
     });
 
     // success
@@ -390,6 +396,12 @@ exports.userService = async (req, res) => {
 
   } catch (err) {
     console.log("err: ", err )
+
+    // // socket io
+    // req.app.io.emit('status1', {
+    //   'message': err.message,
+    //   'type': 'error',
+    // });
 
     res.json({
       status: 'error',
@@ -429,35 +441,42 @@ const _getTokenAndFeeAmount = async () => {
 const _convertTokenWith0x = async () => {
 
   // let's check balance
+  try {
 
-  const maker_dai_balance_wei = await _check_dai_balance({
-    _web3: childWeb3,
-    _token_address: "0xc4375b7de8af5a38a93548eb8453a498222c4ff2",
-    _from_address: "0xd3bbba23a2d1183ddf35ca04ae8f3872a96db8e7",
-    _address_to_check: "0xd3bbba23a2d1183ddf35ca04ae8f3872a96db8e7",
-  })
-  console.log("maker_dai_balance_wei: ", maker_dai_balance_wei)
+    const maker_dai_balance_wei = await _check_dai_balance({
+      _web3: childWeb3,
+      _token_address: "0xc4375b7de8af5a38a93548eb8453a498222c4ff2",
+      _from_address: "0xd3bbba23a2d1183ddf35ca04ae8f3872a96db8e7",
+      _address_to_check: "0xd3bbba23a2d1183ddf35ca04ae8f3872a96db8e7",
+    })
+    console.log("maker_dai_balance_wei: ", maker_dai_balance_wei)
 
-  const maker_need_amount = _normalize_amount({ amount: 0.1 })
-  console.log("maker_need_amount: ", maker_need_amount.toString())
+    const maker_need_amount = _normalize_amount({ amount: 0.1 })
+    console.log("maker_need_amount: ", maker_need_amount.toString())
 
-  const taker_tst_balance_wei = await _check_dai_balance({
-    _web3: childWeb3,
-    _token_address: "0x0fff93a556a91a907165BfB6a6C6cAC695FC33F5",
-    _from_address: "0x690ef2327f70e0e6591c0972729457772a1251ee",
-    _address_to_check: "0x690ef2327f70e0e6591c0972729457772a1251ee",
-  })
-  console.log("taker_tst_balance_wei: ", taker_tst_balance_wei)
+    const taker_tst_balance_wei = await _check_dai_balance({
+      _web3: childWeb3,
+      _token_address: "0x0fff93a556a91a907165BfB6a6C6cAC695FC33F5",
+      _from_address: "0x690ef2327f70e0e6591c0972729457772a1251ee",
+      _address_to_check: "0x690ef2327f70e0e6591c0972729457772a1251ee",
+    })
+    console.log("taker_tst_balance_wei: ", taker_tst_balance_wei)
 
-  const taker_need_amount = _normalize_amount({ amount: 5.0 })
-  console.log("taker_need_amount: ", taker_need_amount.toString())
+    const taker_need_amount = _normalize_amount({ amount: 5.0 })
+    console.log("taker_need_amount: ", taker_need_amount.toString())
 
-  await fillOrderERC20({
-    maker_address: "0xd3bbba23a2d1183ddf35ca04ae8f3872a96db8e7",
-    taker_address: "0x690ef2327f70e0e6591c0972729457772a1251ee",
-    maker_amount: 0.1,
-    taker_amount: 5.0,
-  })
+    await fillOrderERC20({
+      maker_address: "0xd3bbba23a2d1183ddf35ca04ae8f3872a96db8e7",
+      taker_address: "0x690ef2327f70e0e6591c0972729457772a1251ee",
+      maker_amount: 0.1,
+      taker_amount: 5.0,
+    })
+
+    return
+
+  } catch (err) {
+    throw Error(err.message)
+  }
 }
 
 // pay utility with token

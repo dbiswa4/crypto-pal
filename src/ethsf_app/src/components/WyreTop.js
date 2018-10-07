@@ -176,13 +176,25 @@ class WyreTop extends Component {
       // this.setState({
       //   message: results.message
       // })
-
-      Alert.info(results.message, {
-        position: 'top-right',
-        effect: 'slide',
-        timeout: 5000
-      });
-
+      if (results.type === "info") {
+        Alert.info(results.message, {
+          position: 'top-right',
+          effect: 'slide',
+          timeout: 5000
+        });
+      } else if (results.type === "success") {
+        Alert.success(results.message, {
+          position: 'top-right',
+          effect: 'slide',
+          timeout: 5000
+        });
+      } else if (results.type === "error") {
+        Alert.error(results.message, {
+          position: 'top-right',
+          effect: 'slide',
+          timeout: 5000
+        });
+      }
     })
 
     // console.log(this._socket)
