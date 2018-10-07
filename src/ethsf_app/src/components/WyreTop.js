@@ -429,8 +429,8 @@ class WyreTop extends Component {
                 fontWeight: 'bold',
                 lineHeight: '48px',
               }}>
-              PAY YOUR CRYPTO<br/>
-              SERVICES WITH USD
+              PAY IN DOLLARS FOR YOUR <br/>
+              CRYPTO SERVICES
             </span>
           </Col>
           <Col md="3" xs="12" />
@@ -441,7 +441,7 @@ class WyreTop extends Component {
           <Col md="3" xs="12" />
           <Col md="6" xs="12" style={{ textAlign: 'center' }}>
             <span style={{ fontSize: 16, color: '#ffffff', }}>
-              Crypto service and pruducts just one click away from your bank account.
+              Your easy-to-access gate to the world of cryptos.
             </span>
           </Col>
           <Col md="3" xs="12" />
