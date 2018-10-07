@@ -173,9 +173,16 @@ class WyreTop extends Component {
 
     this._socket.on('status1', (results) => {
       console.log("socket io results: ", results)
-      this._updateTrainingLog({
-        message: results.message
-      })
+      // this.setState({
+      //   message: results.message
+      // })
+
+      Alert.info(results.message, {
+        position: 'top-right',
+        effect: 'slide',
+        timeout: 5000
+      });
+
     })
 
     // console.log(this._socket)
@@ -277,6 +284,7 @@ class WyreTop extends Component {
     })
   }
 
+  // simulate alerts
   _show_alerts = async () => {
 
     Alert.info("Start converting 0.5 DAI into 50 TST...", {
@@ -340,7 +348,7 @@ class WyreTop extends Component {
       console.log("signedMsg: ", signedMsg)
 
       // show alerts
-      this._show_alerts()
+      // this._show_alerts()
 
       const results_1 = await MyAPI.userService({
         signer_address: address_1,
@@ -387,8 +395,20 @@ class WyreTop extends Component {
         textAlign: 'center',
       }}>
 
-        {/* title */}
         <Row style={{ marginTop: 60, marginBottom:20 }}>
+          <Col md="3" xs="12" />
+          <Col md="6" xs="12" style={{ textAlign: 'center' }}>
+
+            <img src={require('../images/cryptoPal logo.png')} style={{
+              width: '90%',
+            }} alt="sotuu_icon_white" />
+
+          </Col>
+          <Col md="3" xs="12" />
+        </Row>
+
+        {/* title */}
+        <Row style={{ marginTop: 20, marginBottom:20 }}>
           <Col md="3" xs="12" />
           <Col md="6" xs="12" style={{ textAlign: 'center' }}>
             <span style={{
