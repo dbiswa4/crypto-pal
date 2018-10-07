@@ -452,12 +452,12 @@ const _convertTokenWith0x = async () => {
   const taker_need_amount = _normalize_amount({ amount: 5.0 })
   console.log("taker_need_amount: ", taker_need_amount.toString())
 
-  // await fillOrderERC20({
-  //   maker_address: "0xd3bbba23a2d1183ddf35ca04ae8f3872a96db8e7",
-  //   taker_address: "0x690ef2327f70e0e6591c0972729457772a1251ee",
-  //   maker_amount: 0.1,
-  //   taker_amount: 5.0,
-  // })
+  await fillOrderERC20({
+    maker_address: "0xd3bbba23a2d1183ddf35ca04ae8f3872a96db8e7",
+    taker_address: "0x690ef2327f70e0e6591c0972729457772a1251ee",
+    maker_amount: 0.1,
+    taker_amount: 5.0,
+  })
 }
 
 // pay utility with token
